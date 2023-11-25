@@ -1,24 +1,36 @@
-import logo from './logo.svg';
 import './App.css';
+import BooksList from './Components/BooksList';
+import Navbar from './Components/Navbar';
+import OneMovie from './Components/OneMovie';
+import TopThree from './Components/TopThree';
+import BooksContextProvider from './Context/BooksContextProvider';
+import { useState } from 'react';
 
 function App() {
+
+  const [isTopThreeVisible, setIsTopThreeVisible] = useState(true)
+  const [clickedPosterID, setClickedPosterID] = useState(null)
+  const [searchedTerm, setSearchedTerm] = useState('')
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BooksContextProvider
+      searchedTerm={searchedTerm}
+    >
+      <Navbar
+        setSearchedTerm={setSearchedTerm}
+        setIsTopThreeVisible={setIsTopThreeVisible}
+      />
+      {
+        isTopThreeVisible ? <TopThree /> : <OneMovie
+          clickedPosterID={clickedPosterID}
+        />
+      }
+      <BooksList
+        setIsTopThreeVisible={setIsTopThreeVisible}
+        setClickedPosterID={setClickedPosterID}
+      />
+    </BooksContextProvider>
   );
 }
 
